@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">    
+    <title>IFE ECMAScript</title>
+</head>
+<body>        
+    <div id="wrapper">
+        <div id="news-top" class="section">
+            <h3>Some title</h3>
+            <div class="content">
+                <ul>
+                    <li><span>HTML</span><a href="">Some Link1</a></li>
+                    <li><span>JS</span><a class="active" href="">Some Link2</a></li>
+                    <li><span>CSS</span><a href="">Some Link3</a></li>
+                    <li><span>JS</span><a href="">Some Link4</a></li>
+                </ul>
+            </div>
+            <img src="">
+            <p class="">Some Text</p>
+        </div>
+        <div id="news-normal" class="section">
+            <h3>Some title</h3>
+            <div class="content">
+                <ul>
+                    <li><span>HTML</span><a href="">Some Link1</a></li>
+                    <li><span>HTML</span><a href="">Some Link2</a></li>
+                    <li><span>JS</span><a class="active" href="#">Some Link3</a></li>
+                    <li><span>CSS</span><a href="">Some Link4</a></li>
+                </ul>
+            </div>
+            <img src="">
+            <p class="">Some Text</p>
+        </div>      
+    </div>
+    <script>
+// 1.返回页面中所有li标签
+    function getAllListItem() {
+      var li=document.getElementsByTagName("li");
+      console.log(li);
+    }
+ getAllListItem();
+  // 2.返回某个section下所有span中内容为HTML的span标签
+    function findAllHtmlSpanInOneSection() {
+        var html=document.getElementById("wrapper").getElementsByTagName("span");
+        var span=new Array();
+        console.log(html);
+        console.log(html[0].innerHTML=="HTML");
+        for(var i=0;i<html.length;i++){
+        	if(html[i].innerHTML=="HTML"){
+        		span.push(html[i]);
+        	}
+        }
+        console.log(span);
+    }
+    findAllHtmlSpanInOneSection();
+ // 3.返回某个section下，所有所包含span内容为JS的LI标签
+    function findListItem() {
+    	var li2=new Array();
+        var li=document.getElementById("wrapper").getElementsByTagName("li");
+        for(var i=0;i<li.length;i++){
+        	var span=li[i].getElementsByTagName("span");
+        	for(var j=0;j<span.length;j++){
+        		if(span[j].innerHTML=="JS")
+        		{
+        			li2.push(li[i]);
+        		}
+        	}
+        }
+        console.log(li2);
+    }
+findListItem();
+        // 4.返回某个section下，class为active的链接中包含的文字内容
+    function getActiveLinkContent(){
+        var classText=document.getElementById("wrapper").getElementsByClassName("active");
+        var inner=new Array();
+        for(var i=0;i<classText.length;i++){
+        	inner.push(classText[i].innerHTML);
+        }
+        console.log(inner);  
+    }
+getActiveLinkContent();
+//编码训练2
+//1.返回页面中所有li标签
+ function getAllListItem2() {
+      var li2=document.querySelectorAll("li");
+      console.log(li2);
+   }
+ getAllListItem2();
+   // 2.返回某个section下所有span中内容为HTML的span标签
+    function findAllHtmlSpanInOneSection2() {
+        var html=document.querySelector(".section").querySelectorAll("span");
+        var span=new Array();
+        for(var i=0;i<html.length;i++){
+        	if(html[i].innerHTML=="HTML"){
+        		span.push(html[i]);
+        	}
+        }
+        console.log(span);
+    }
+    findAllHtmlSpanInOneSection2();
+     // 3.返回某个section下，所有所包含span内容为JS的LI标签
+    function findListItem2() {
+    	var li2=new Array();
+        var li=document.querySelector(".section").querySelectorAll("li");
+        for(var i=0;i<li.length;i++){
+        	var span=li[i].getElementsByTagName("span");
+        	for(var j=0;j<span.length;j++){
+        		if(span[j].innerHTML=="JS")
+        		{
+        			li2.push(li[i]);
+        		}
+        	}
+        }
+        console.log(li2);
+    }
+findListItem2();
+ // 4.返回某个section下，class为active的链接中包含的文字内容
+    function getActiveLinkContent2(){
+        var classText=document.querySelector(".section").querySelectorAll(".active");
+        var inner=new Array();
+        for(var i=0;i<classText.length;i++){
+        	inner.push(classText[i].innerHTML);
+        }
+        console.log(inner);  
+    }
+getActiveLinkContent2();
+    </script>
+</body>
+</html>
