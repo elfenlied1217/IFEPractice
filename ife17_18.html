@@ -1,0 +1,186 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">    
+    <title>IFE ECMAScript</title>
+</head>
+<body>        
+    <input id="first-number" type="text" value="0" placeholder="第一个数字">
+    <input id="second-number" type="text" value="0" placeholder="第二个数字">
+    <button id="add-btn">加</button>
+    <button id="minus-btn">减</button>
+    <button id="times-btn">乘</button>
+    <button id="divide-btn">除</button>
+    <p id="result">运算结果</p>
+    
+    <input id="dec-number" type="number" placeholder="输入一个十进制非负整数">
+     <input id="bin-bit" type="number" placeholder="输入转化后二进制数字位数">
+    <button id="trans-btn">转化为二进制</button>
+     <button id="trans-btn2">转化为二进制检测</button>
+    <p id="result1">运算结果</p>
+     <p id="result2">运算结果</p>
+    <script>
+    	//加减乘除
+ function checkNumber(num1){
+ 	var n=0;
+ 		var j=0;
+    	 	console.log(num1);
+    	if(num1[0]=="-"){
+    	 	if(isNaN(num1[1])==true){
+    	 	n++;console.log("输入错误");
+    	 	} 
+    	 	else{
+    	 		 for(var i=2;i<num1.length;i++){
+    	 	if(isNaN(num1[i])==true&&num1[i]!='.'){
+    	 		n++;console.log("输入错误");}
+    	 		else {
+    	 			if(isNaN(num1[i])==true&&num1[i]=='.')
+    	 			j++;
+    	 		}
+    	 	}
+    	 		  if(j>=2)
+    	 			{n++;console.log(j+"输入错误")};
+    	 		
+    	 	}
+    	 	}
+    	else{
+    		if(isNaN(num1[0])==true){
+    	 	n++;console.log("输入错误");
+    	 	} 
+   	else{ 
+   		for(var i=1;i<num1.length;i++){
+    	 	if(isNaN(num1[i])==true&&num1[i]!='.'){
+    	 		n++;console.log("输入错误");}
+    	 		else {
+    	 			if(isNaN(num1[i])==true&&num1[i]=='.')
+    	 			j++;
+    	 		}
+    	 	}
+    	 		  if(j>=2)
+    	 			{n++;console.log(j+"输入错误")};
+    	 		
+    	}
+   	}
+    	if(n>0)
+    	{
+    		console.log("输入错误重新输入");
+    		return 0;
+    	}
+    	else{
+    		return  parseFloat(num1.join(""));
+    	} 
+ }
+ 
+    	 document.getElementById("add-btn").onclick = function() {
+    	 	var num2=document.getElementById("first-number").value.split("");
+    	var number2=checkNumber(num2);
+    	 	var num3= document.getElementById("second-number").value.split("")  ;  
+    	 	var number3=checkNumber(num3);
+    	 	document.getElementById("result").innerHTML=number2+number3;
+        }
+    	 
+    	  document.getElementById("minus-btn").onclick = function() {
+           var num2=document.getElementById("first-number").value.split("");
+    	var number2=checkNumber(num2);
+    	 	var num3= document.getElementById("second-number").value.split("")  ;  
+    	 	var number3=checkNumber(num3);
+    	 	document.getElementById("result").innerHTML=number2-number3;
+        }
+    	  
+    	   document.getElementById("times-btn").onclick = function() {
+            var num2=document.getElementById("first-number").value.split("");
+    	var number2=checkNumber(num2);
+    	 	var num3= document.getElementById("second-number").value.split("")  ;  
+    	 	var number3=checkNumber(num3);
+    	 	document.getElementById("result").innerHTML=number2*number3;
+        }
+    	   
+    	    document.getElementById("divide-btn").onclick = function() {
+           var num2=document.getElementById("first-number").value.split("");
+    	var number2=checkNumber(num2);
+    	 	var num3= document.getElementById("second-number").value.split("")  ;  
+    	 	var number3=checkNumber(num3);
+    	 	if(number3==0)
+    	 	{console.log("error");}
+    	 	else{
+    	 			document.getElementById("result").innerHTML=number2/number3;
+    	 	}
+        }
+    	    //二分法1
+    	    function dec2bin(decnumber) {
+    	    	var array=new Array();
+    	 	var k=0;
+    	    	if(decnumber<=0)
+    	    {	console.log("请输入非负整数");
+    	    	return ['error'];}
+    	 	while(decnumber!=0){
+    	 		array[k]=decnumber%2;
+    	 		decnumber=Math.floor(decnumber/2);
+    	 		k++;
+    	 	}
+    	 	return array;
+    	 	}
+    	    
+    	     document.getElementById("trans-btn").onclick = function() {
+    	 	var decnumber=parseInt(document.getElementById("dec-number").value);
+    	 	array=dec2bin(decnumber);
+    	document.getElementById("result1").innerHTML=array.reverse().join("");
+        }
+    	     //二分法2
+    	     
+    	      document.getElementById("trans-btn2").onclick = function() {
+    	 	var decnumber=parseInt(document.getElementById("dec-number").value);
+    	 	array=dec2bin(decnumber);
+    	 	var binbit=parseInt(document.getElementById("bin-bit").value);
+    	 	if(binbit<0)
+    	 	{console.log("位数输入错误，重新输入");}
+    	 else{	
+    	 	if(array.length>binbit)
+    	{document.getElementById("result2").innerHTML=array.reverse().join("");
+    	console.log("输入位数过小");}
+    	else if(array.length==binbit){
+    		document.getElementById("result2").innerHTML=array.reverse().join("");}
+    	else{
+    		var bit=binbit-array.length;
+    for(var h=1;h<=bit;h++)
+    	{	array.push(0);
+    	}
+    	document.getElementById("result2").innerHTML=array.reverse().join("");
+    	 }
+    	 }
+    	}
+        
+    	     //3的倍数输出PA
+    	     for(var i=1;i<100;i++)
+    	     {
+    	     	if(i%3==0)
+    	     	console.log("PA");
+    	     	else
+    	     	console.log(i);
+    	     }
+    	     //4.99乘法表
+    	     for(var m=1;m<10;m++){
+    	     	var table=new Array();
+    	     	for(var n=1;n<m+1;n++)
+    	     	{table.push(m+"*"+n+"="+m*n);
+    	     	}
+    	     	console.log(table);
+    	     	document.write(table);
+    	     	document.write("<br>");
+    	     }
+    	     //5.根据当前时间，在页面中输出不同的问候语
+    	     var date=new Date();
+    	     var hour=date.getHours();
+    	     if(6<=hour&&hour<=10){
+    	     	alert("Good Morning！")
+    	     }else if(11<=hour&&hour<=13){
+    	     alert("Have a Good Rest");
+    	     } else if(14<=hour&&hour<=20){
+    	     	alert("Good Afternoon");
+    	     }else{
+    	     	alert("Good Evening AND Have a Good Sleep");
+    	     }
+    </script>
+  
+</body>
+</html>
