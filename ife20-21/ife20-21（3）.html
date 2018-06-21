@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			div{
+				background-image:url(ife20_21.jpg);
+				width:480px;
+				height:480px;
+				background-position:0px 0px;
+				background-repeat: no-repeat;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="container" >
+			
+		</div>
+		<script>
+			var container=document.getElementById("container");
+			var i=0;
+			console.log(container.style.backgroundPositionY);
+function animation() {
+	container.style.backgroundPositionY=i + "px";
+	i-=480;
+	if(i>=-480*16){
+		setTimeout(animation,200);
+	}else{
+		i=0;
+		setTimeout(animation,200);
+	}
+}
+window.onload=animation;
+		</script>
+	</body>
+</html>
