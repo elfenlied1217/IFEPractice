@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div>
+    <label>String A:
+        <input id="radio-a" type="radio" checked="true" name="str-obj" value="a">
+    </label>
+    <textarea id="str-a"></textarea>
+    <label>String B:
+        <input id="radio-b" type="radio" name="str-obj" value="b">
+    </label>
+    <textarea id="str-b"></textarea>        
+    <label>Num A：<input id="num-a" type="number" value="0"></label>
+    <label>Num B：<input id="num-b" type="number" value="1"></label>
+</div>
+<div>
+    <button id="btn1">1.获取当前选中输入的内容长度</button>
+    <button id="btn2">2.当前选中输入中的第3个字符</button>
+    <button id="btn3">3.把两个输入框的文字连接在一起输出（concat）</button>
+    <button id="btn4">4.输入B中的内容，在输入A的内容中第一次出现的位置（indexOf）</button>
+    <button id="btn5" >5.输入A中的内容，在输入B的内容中最后一次出现的位置（lastIndexOf）</button>
+    <button id="btn6">6.使用slice获取选中输入框内容的部分内容，参数为num-a及num-b</button>
+    <button id="btn7">7.当前选中输入框的行数</button>
+    <button id="btn8">8.使用substr获取选中输入框内容的子字符串，参数为num-a及num-b</button>
+    <button id="btn9">9.把所选输入框中的内容全部转为大写</button>
+    <button id="btn10">10.把所选输入框中的内容全部转为小写</button>
+    <button id="btn11">11.把所选输入框中内容的半角空格全部去除</button>
+    <button id="btn12">12.把所选输入框中内容的a全部替换成另外一个输入框中的内容</button>
+</div>
+<p id="result"></p>
+<script>
+	 var btn1=document.getElementById("btn1");
+     var btn2=document.getElementById("btn2");
+      var btn3=document.getElementById("btn3");
+       var btn4=document.getElementById("btn4");
+        var btn5=document.getElementById("btn5");
+         var btn6=document.getElementById("btn6");
+          var btn7=document.getElementById("btn7");
+           var btn8=document.getElementById("btn8");
+        var btn9=document.getElementById("btn9");
+         var btn10=document.getElementById("btn10");
+          var btn11=document.getElementById("btn11");
+           var btn12=document.getElementById("btn12");
+           //1.获取当前选中输入的内容长度
+             btn1.onclick=function(){
+var radio=document.getElementsByName("str-obj");
+var textarea=document.getElementsByTagName("textarea");
+var result=document.getElementById("result");
+console.log(textarea);
+for(var i=0;i<radio.length;i++){
+	if(radio[i].checked==true){
+	alert('选中的输入长度内容为' + textarea[i].value.split("").length);
+	   }
+    }
+    };
+    //2.当前选中输入中的第3个字符
+                     btn2.onclick=function(){
+var radio=document.getElementsByName("str-obj");
+var textarea=document.getElementsByTagName("textarea");
+var result=document.getElementById("result");
+console.log(textarea);
+for(var i=0;i<radio.length;i++){
+	if(radio[i].checked==true){
+	 if(textarea[i].value.split("").length<3)
+	 alert("输入的字符小于3个");
+	 else
+	 alert("选中输入的第三个字符是"+textarea[i].value.split("")[2]);
+	   }
+    }
+    };
+    //3.把两个输入框的文字连接在一起输出（concat）
+    btn3.addEventListener("click",function(){
+    	var str_a=document.getElementById("str-a").value.split("");
+    	var str_b=document.getElementById("str-b").value.split("");
+    	var result=document.getElementById("result");
+    	result.innerHTML=str_a.concat(str_b).join("");
+    })
+    //4.输入B中的内容，在输入A的内容中第一次出现的位置
+     btn4.addEventListener("click",function(){
+    	var str_a=document.getElementById("str-a").value;
+    	var str_b=document.getElementById("str-b").value;
+    	var result=document.getElementById("result");
+    	result.innerHTML=str_a.indexOf(str_b,0);
+    })
+     //5.输入A中的内容，在输入B的内容中最后一次出现的位置
+       btn5.addEventListener("click",function(){
+    	var str_a=document.getElementById("str-a").value;
+    	var str_b=document.getElementById("str-b").value;
+    	var result=document.getElementById("result");
+    	result.innerHTML=str_b.lastIndexOf(str_a);
+    })
+       //6.使用slice获取选中输入框内容的部分内容，参数为num-a及num-b
+       btn6.onclick=function(){
+var radio=document.getElementsByName("str-obj");
+var textarea=document.getElementsByTagName("textarea");
+var result=document.getElementById("result");
+var num_a=document.getElementById("num-a").value;
+var  num_b=document.getElementById("num-b").value;
+var num_c=num_a>num_b?num_a:num_b;//两者取大
+var num_d=num_a<num_b?num_a:num_b;//两者取小
+console.log(textarea);
+for(var i=0;i<radio.length;i++){
+	if(radio[i].checked==true){
+	result.innerHTML=textarea[i].value.slice(num_d,num_c);
+	   }
+    }
+    };
+    //7.当前选中输入框的行数
+    btn7.onclick=function(){
+var radio=document.getElementsByName("str-obj");
+var textarea=document.getElementsByTagName("textarea");
+var result=document.getElementById("result");
+var k=1;
+for(var i=0;i<radio.length;i++){
+	if(radio[i].checked==true){
+	for(var j=0;j<textarea[i].value.split("").length;j++){
+		if(textarea[0].value.split("")[j]=="\n")
+		k++;
+	}
+	   }
+    }
+result.innerHTML="被选中输入框的行数为"+k;
+    };
+    //8.使用substr获取选中输入框内容的子字符串，参数为num-a及num-b
+     btn8.onclick=function(){
+var radio=document.getElementsByName("str-obj");
+var textarea=document.getElementsByTagName("textarea");
+var result=document.getElementById("result");
+var num_a=document.getElementById("num-a").value;
+var  num_b=document.getElementById("num-b").value;
+
+console.log(textarea);
+for(var i=0;i<radio.length;i++){
+	if(radio[i].checked==true){
+	result.innerHTML=textarea[i].value.substr(num_a,num_b);
+	   }
+    }
+    };
+    //9.把所选输入框中的内容全部转为大写
+     btn9.onclick=function(){
+var radio=document.getElementsByName("str-obj");
+var textarea=document.getElementsByTagName("textarea");
+var result=document.getElementById("result");
+console.log(textarea);
+for(var i=0;i<radio.length;i++){
+	if(radio[i].checked==true){
+	result.innerHTML=textarea[i].value.toUpperCase();
+	   }
+    }
+    };
+     //10.把所选输入框中的内容全部转为小写
+       btn10.onclick=function(){
+var radio=document.getElementsByName("str-obj");
+var textarea=document.getElementsByTagName("textarea");
+var result=document.getElementById("result");
+console.log(textarea);
+for(var i=0;i<radio.length;i++){
+	if(radio[i].checked==true){
+	result.innerHTML=textarea[i].value.toLowerCase();
+	   }
+    }
+    };
+    //11.把所选输入框中内容的半角空格全部去除
+    //12.把所选输入框中内容的a全部替换成另外一个输入框中的内容
+     btn12.addEventListener("click",function(){
+    	var str_a=document.getElementById("str-a").value;
+    	var str_b=document.getElementById("str-b").value;
+    	var result=document.getElementById("result");
+    	
+    })
+     
+</script>
+	</body>
+</html>

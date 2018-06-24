@@ -1,0 +1,52 @@
+<!D
+OCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<input id="stack-input" type="text">
+<p id="stack-cont">栈内容：apple-gt;pear</p>    
+<button id="push-btn">进栈</button>
+<button id="pop-btn">退栈</button>
+<button id="font-btn">打印栈顶元素内容</button>
+<button id="empty-btn">判断栈是否为空</button>
+<script>
+
+   /* 实现如阅读材料中，队列的相关入队、出队、获取队头、判空的操作
+    队头对应数组中最后一个元素
+    入队和出队操作后，需要在 id 为 queue-cont 的 p 标签中更新显示队列中的内容，队头在最右侧，中间用 -> 连接（练习使用数组的join方法）*/
+
+var stack = ["apple", "pear"];
+var push=document.getElementById("push-btn");
+    	var pop=document.getElementById("pop-btn");
+    	var font=document.getElementById("font-btn");
+    	var empty=document.getElementById("empty-btn");
+    	function stackcontent(str){
+    		var stack_cont=document.getElementById("stack-cont");
+    		stack_cont.innerHTML=str;
+    	};
+    	push.addEventListener("click",function(){
+    		var input=document.getElementById("stack-input").value;
+    		console.log(input=="");
+    		if(input!="")
+    		stack.push(input);
+    		stackcontent(stack.join("->"));
+    	});
+    	pop.addEventListener("click",function(){
+    		stack.pop();
+    		stackcontent(stack.join("->"));
+    	});
+    	font.addEventListener("click",function(){
+    		stackcontent(stack[stack.length-1]);
+    	});
+    	empty.addEventListener("click",function(){
+    		if(stack.length==0)
+    		stackcontent("数组空了，请重新输入");
+    		else
+    		stackcontent("数组长度为"+stack.length);
+    	});
+</script>
+	</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<input id="stack-input" type="text">
+<p id="stack-cont">栈内容：apple-gt;pear</p>    
+<button id="push-btn">进栈</button>
+<button id="pop-btn">退栈</button>
+<button id="font-btn">打印栈顶元素内容</button>
+<button id="empty-btn">判断栈是否为空</button>
+
+<script>
+
+var stack = ["apple", "pear"];
+var stack = ["apple", "pear"];
+var push=document.getElementById("push-btn");
+    	var pop=document.getElementById("pop-btn");
+    	var font=document.getElementById("font-btn");
+    	var empty=document.getElementById("empty-btn");
+    	function stackcontent(str){
+    		var stack_cont=document.getElementById("stack-cont");
+    		stack_cont.innerHTML=str;
+    	};
+    	push.addEventListener("click",function(){
+    		var input=document.getElementById("stack-input").value;
+    		console.log(input=="");
+    		if(input!="")
+    		stack.unshift(input);
+    		stackcontent(stack.join("<-"));
+    	});
+    	pop.addEventListener("click",function(){
+    		stack.shift();
+    		stackcontent(stack.join("<-"));
+    	});
+    	font.addEventListener("click",function(){
+    		stackcontent(stack[0]);
+    	});
+    	empty.addEventListener("click",function(){
+    		if(stack.length==0)
+    		stackcontent("数组空了，请重新输入");
+    		else
+    		stackcontent("数组长度为"+stack.length);
+    	});
+</script>
+
+	</body>
+</html>
