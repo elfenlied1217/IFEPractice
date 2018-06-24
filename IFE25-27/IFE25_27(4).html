@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	<input type="number"   min=2000 max=2050 id="year-select" value=2000>年
+<input type="number"   min=1 max=12 id="month-select" value=1>月
+<input type="number"   min=1 max=31 id="day-select" value=1>日
+<input type="number"   min=0 max=23 id="hour-select" value=0>时
+<input type="number"   min=0 max=59 id="minute-select" value=0>分
+<input type="number"   min=0 max=59 id="second-select" value=0>秒
+<p id="result-wrapper">现在距离 2001年1月1日星期X HH:MM:SS 还有 X 天 X 小时 X 分 X 秒</p>
+<p id="time"></p>
+		<button >显示当前时间</button>
+		<button>结束显示</button>
+    <script>/*使用上方的HTML结构（可以根据需要自行微调）为基础编写JavaScript代码
+    当变更任何一个select选择时，更新 result-wrapper 的内容
+    当所选时间早于现在时间时，文案为 现在距离 "所选时间" 已经过去 xxxx
+    当所选时间晚于现在时间时，文案为 现在距离 "所选时间" 还有 xxxx
+    注意当前时间经过所选时间时候的文案变化
+    注意选择不同月份的时候，日期的可选范围不一样，比如1月可以选31天，11月只有30天，注意闰年
+    同样，需要注意，通过优雅的函数封装，使得代码更加可读且可维护*/
+var input=document.querySelectorAll("input");
+var result=document.querySelector("#result-wrapper");
+var btn=document.querySelectorAll("button");
+var selecttime=[2000,1,1,0,0,0];
+
+input[2].addEventListener(
+	"change",function(){
+		if(input[0].value%4==0&&input[1].value=='2')
+		input[2].max=29;
+		else{
+			switch(input[1].value){
+			case '2': input[2].max=28;break;
+			case '1':
+			case '3':
+			case '5':
+			case '7':
+			case '8':
+			case '9':
+			case '12': input[2].max=31;break;
+			case '4':
+			case '6':
+			case '9':
+			case '11': input[2].max=30;break;
+			}
+		}
+	}
+)
+input[0].addEventListener("change",function(){
+		selecttime[0]=input[0].value;
+	})
+	input[1].addEventListener("change",function(){
+		selecttime[1]=input[1].value;
+	})
+input[2].addEventListener("change",function(){
+		selecttime[2]=input[2].value;
+	})
+	input[3].addEventListener("change",function(){
+		selecttime[3]=input[3].value;
+	})
+	input[4].addEventListener("change",function(){
+		selecttime[4]=input[4].value;
+	})
+	input[5].addEventListener("change",function(){
+		selecttime[5]=input[5].value;
+	})
+	
+function compare(n){
+	return n<10?"0"+n:n;
+} 
+
+function getDate(date1){
+	year=date1.getFullYear();
+	month=compare(date1.getMonth()+1);
+	day=compare(date1.getDate());
+	weekday=getweekday(date1);
+	hour=compare(date1.getHours());
+	minute=compare(date1.getMinutes());
+	second=compare(date1.getSeconds());
+	return '现在距离'+ year+'年'+month+'月'+day+'日 星期'+weekday+' '+hour+':'+minute+"："+second;
+}
+
+function  content(){
+	var  date=new Date();
+var time=new Date(selecttime[0],selecttime[1]-1,selecttime[2],selecttime[3],selecttime[4],selecttime[5]);
+var timesecond=date.getTime()-time.getTime()>=0?parseInt((date.getTime()-time.getTime())/1000)
+:parseInt((time.getTime()-date.getTime())/1000);
+var txt=date.getTime()-time.getTime()<=0?'还有':"已经过去";
+return result.innerHTML=getDate(time)+txt+timedistance(timesecond);
+}
+function timedistance(second){
+	var d=parseInt(second/86400);
+	var h=compare(parseInt(second%86400/3600));
+	var m=compare(parseInt(second%86400%3600/60));
+	var s=compare(parseInt(second%86400%3600%60));
+	return d+"天"+h+"小时"+m+"分"+s+"秒" //X天 X 小时 X 分 X 秒
+}
+function getweekday(input){
+	{
+	 switch(input.getDay()){
+	 	case 0: return "天"; break;
+	    case 1: return "一"; break;
+	     case 2: return "二"; break;
+	     case 3: return "三"; break;
+	     case 4: return "四"; break;
+	     case 5: return "五"; break;
+	     case 6: return "六"; break;
+	 }
+	}
+}
+function calc(){
+	 t=setInterval(content,500);
+}
+btn[0].addEventListener("click",calc);
+btn[1].addEventListener("click",function(){
+	clearInterval(t);
+});
+
+</script>
+	</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<p id="time"></p>
+		<button >显示当前时间</button>
+		<button>结束显示</button>
+		<script>
+			
+  /*  在页面中显示当前日期及时间，按秒更新
+    格式为 YYYY 年 MM 月 DD 日 星期 D HH:mm:ss
+    注意位数的补齐，比如：
+    -- 假设时间为2008年10月10日星期一的12点12分12秒，显示2008年10月10日星期一 12:12:12
+    -- 假设时间为2008年1月1日星期一的3点2分2秒，显示2008年01月01日星期一 03:02:02
+输出格式变为：2008-10-10 Monday 07:10:30 PM
+编码过程中，我们希望你注意对函数的封装，尽量让一个函数就做一个事情，而不要把所有的功能、代码揉在一起：
+
+    封装一个函数，来根据某个日期返回这一天是星期几
+
+    封装一个函数，把最后的日期时间，按照要求的格式进行包装
+    可能不止上面这些，尽可能地进行功能的解耦和拆解*/
+var time=document.querySelector("#time");
+var btn=document.querySelectorAll("button");
+function getDate(){
+	var date=new Date();
+	year=date.getFullYear();
+	month=compare(date.getMonth()+1);
+	day=compare(date.getDate());
+	weekday=getweekday(date);
+	hour=compare2(date.getHours());
+	minute=compare(date.getMinutes());
+	second=compare(date.getSeconds());
+
+	time.innerHTML=year+"-"+month+"-"+day+" "+weekday+" "+compare(hour[1])+":"+minute+":"+second+" "+hour[0];
+}
+//    封装一个函数，把月、日、小时等出现个位数的情况前面补充0，补充为两位，比如1变为01
+function compare(n){
+	 return n<10?"0"+n:n;
+}
+function compare2(n){
+	var arr=[];
+	if(n>12){
+		arr.push("PM");
+		n-12>=10?arr.push(n-12):arr.push("0"+n-12);
+	}
+	else{
+		arr.push("AM");
+		n>=10?arr.push(n):arr.push("0"+n);
+	}
+	return arr;
+	}
+
+
+function getweekday(input){
+	if(input instanceof Date){
+	 switch(input.getDay()){
+	 	case 0: return "Sunday"; break;
+	    case 1: return "Monday"; break;
+	     case 2: return "Tuesday"; break;
+	     case 3: return "Wednesday"; break;
+	     case 4: return "Thursday"; break;
+	     case 5: return "Friday"; break;
+	     case 6: return "Saturday"; break;
+	 }
+	}
+}
+function calc(){
+	 t=setInterval(getDate,1000);
+}
+btn[0].addEventListener("click",calc);
+btn[1].addEventListener("click",function(){
+	clearInterval(t);
+});
+
+
+		</script>
+	</body>
+</html>
+
+	</body>
+</html>
