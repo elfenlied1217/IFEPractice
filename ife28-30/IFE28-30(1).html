@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+    li:hover{
+        background-color: brown;
+    }
+    .active{
+        background-color: green;
+    }
+    .disabled{
+        background-color: white;
+    }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <input id="email-input" type="text">
+        <ul id="email-sug-wrapper" class="email-sug"></ul>
+      
+       </div>
+    <script>
+        var postfixList = ['163.com', 'gmail.com', '126.com', 'qq.com', '263.net'];
+        var  ul=document.querySelector("#email-sug-wrapper");
+        var  input=document.getElementById("email-input");
+     /* <input id="ceshi" type="text">  var demo=document.getElementById("ceshi");
+    /*    demo.addEventListener("keydown",function(event){
+            alert(event.keyCode);
+        })*/
+       /* 获取用户输入，生成提示框中的提示内容，将提示内容添加到email-sug-wrapper中
+    控制email-sug-wrapper的显示/隐藏状态*/
+        input.oninput=controlprompt;
+/*拿到input输入框的输入内容trim后返回  */
+function getinput(){
+    return input.value.trim();
+}
+/*function getinput() {
+    var arr=[];
+    var brr=[];
+      arr=input.value.trim().split("") ;
+      for(var i=0;i<arr.length;i++){
+          if(arr[i]=="@")  break;
+          brr.push(arr[i]);
+      }
+      return brr.join("");
+}*/
+/* 获取用户输入
+    遍历postfixList {
+        把用户输入和每一个postfix进行结合成为每一个Li
+    }
+    返回生成的提示内容*/
+    /*  当用户输入了 @ 及部分后缀时，只从 postfixList 选取符合用户输入预期的后缀，我们以前缀匹配为要求。
+    当用户输入不满足任何前缀匹配时，则显示全部提示*/
+function setprompt() {
+    
+    var input1=getinput().split("") ;
+    var j,n=null;
+    var brr=[];
+    var crr=[];
+   var ullist=[];
+   for(var i=0;i<input1.length;i++){
+          if(input1[i]=="@") {j=i; break};
+          brr.push(input1[i]);
+      }
+if(j==null){
+    for(var i=0;i<postfixList.length;i++){
+       ullist.push(brr.join("")+"@"+postfixList[i]);
+   }
+} else{
+      for(j=i+1;j<input1.length;j++){
+         crr.push(input1[j]);
+      }
+      for(var k=0;k<postfixList.length;k++)
+        {  
+            if(postfixList[k].search(crr.join(""))!=-1)
+           { ullist.push(brr.join("")+"@"+postfixList[k]); n=1;}
+        }
+        if(n==null){
+            for(var i=0;i<postfixList.length;i++){
+       ullist.push(brr.join("")+"@"+postfixList[i]);
+        }
+        }
+    }
+   return ullist;
+}
+/*获取生成提示框中的提示内容
+    将内容添加到email-sug-wrapper中*/
+function addprompt() {
+    var fragment=document.createDocumentFragment();
+    var ullist=setprompt();
+    var li=null;
+    for(var i=0;i<ullist.length;i++){
+        li=document.createElement("li");
+        li.appendChild(document.createTextNode(ullist[i]));
+        fragment.appendChild(li);
+    }
+    ul.appendChild(fragment);
+    ul.firstChild.setAttribute("class","active");
+}
+/*if 用户输入为空 {
+        隐藏提示框
+    } else {
+        显示提示框
+    }*/
+function controlprompt() {
+    if(ul.childNodes.length){
+   for(var i=0;i<ul.childNodes.length;i+=0){
+       ul.removeChild(ul.firstChild);
+   }
+   }
+    addprompt();
+  if(getinput()=="") hiddenprompt();
+  else displayprompt();
+}
+/*   做具体隐藏提示框的操作*/
+function hiddenprompt() {
+    ul.style.display="none";
+}
+/*做具体隐藏提示框的操作*/
+function displayprompt() {
+    ul.style.display="block";
+}
+/*
+    使用CSS实现：鼠标滑过提示框的某一个提示时，这个提示内容背景色变化，表示鼠标经过了这个DOM节点 :hover伪类
+    鼠标如果点击某个提示，则提示内容进入输入框，同时提示框消失
+    在上个步骤结束后，在输入框中任意再输入字符或删除字符，则重新开始出现提示框
+*/
+ul.onclick = function (event) {
+    console.log(event.target);
+  input.value=event.target.firstChild.nodeValue;
+  if(ul.childNodes.length){
+   for(var i=0;i<ul.childNodes.length;i+=0){
+       ul.removeChild(ul.firstChild);
+   }
+   }
+}
+/*我们给提示框加上3个按键的功能，分别是回车和上下键，使得可以通过键盘操作进行提示框的选择
+
+    当有提示框的时候，默认第一个提示为被选择状态，用一个和鼠标滑过不一样的背景色来标识  CSS
+    当有输入框的时候，按上键，可以向上移动选择状态，如果按键之前的被选择提示是第一个，则被选状态移到最下面一个
+    当有输入框的时候，按下键，可以向下移动选择状态，如果按键之前的被选择提示是最后一个，则被选状态移到第一个
+    当有输入框时，按回车键，则将当前被选中状态的提示内容，放到输入框中，并隐藏提示框
+    当没有输入框的时候，这3个键盘按键无响应
+    当用户输入发生改变的时候，选择状态都重新切回到第一个提示*/
+
+/*function rechecked() {
+var li=document.querySelectorAll("li");
+if (当前选中状态Li不是第一个) {
+    清除掉它的选中状态
+    设置第一个Li为选中状态
+}
+}*/
+
+// 监听特殊3个键的键盘事件，这个事件可能就是inputDom的输入监听，也有可能是另外一个，请自己测试后判断
+input.addEventListener("keydown",function(){
+    var j,m=0;
+if(event.keyCode==38)  {
+    for(var i=0;i<ul.childNodes.length;i++){
+        if(ul.childNodes[i].getAttribute("class")=="active")
+        j=i;
+    }
+    if (j) {
+        ul.childNodes[j].setAttribute("class","disabled");
+        ul.childNodes[j-1].setAttribute("class","active");
+    } else {
+        ul.childNodes[j].setAttribute("class","disabled");
+        ul.childNodes[ul.childNodes.length-1].setAttribute("class","active");
+    }
+}
+if(event.keyCode==40) {
+    for(var k=0;k<ul.childNodes.length;k++){
+        if(ul.childNodes[k].getAttribute("class")=="active")
+        m=k;
+    }
+    if (m==ul.childNodes.length-1) {
+        ul.childNodes[m].setAttribute("class","disabled");
+        ul.childNodes[0].setAttribute("class","active");
+    } else {
+        ul.childNodes[m].setAttribute("class","disabled");
+        ul.childNodes[m+1].setAttribute("class","active");
+    }
+}
+
+if(event.keyCode==13)  {
+    for(var t=0;t<ul.childNodes.length;t++){
+        if(ul.childNodes[t].getAttribute("class")=="active")
+       {
+           console.log(t);
+           input.value=ul.childNodes[t].firstChild.nodeValue;
+           if(ul.childNodes.length){
+   for(var i=0;i<ul.childNodes.length;i+=0){
+       ul.removeChild(ul.firstChild);
+   }
+           }
+       }
+    }
+}
+})
+
+    </script>
+</body>
+</html>

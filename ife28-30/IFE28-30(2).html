@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+    li:hover{
+        background-color: brown;
+    }
+    .active{
+        background-color: green;
+    }
+    .disabled{
+        background-color: white;
+    }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <input id="email-input" type="text">
+        <ul id="email-sug-wrapper" class="email-sug"></ul>
+      
+       </div>
+    <script>
+        var postfixList = ['163.com', 'gmail.com', '126.com', 'qq.com', '263.net'];
+        var  ul=document.querySelector("#email-sug-wrapper");
+        var  input=document.getElementById("email-input");
+     /* <input id="ceshi" type="text">  var demo=document.getElementById("ceshi");
+    /*    demo.addEventListener("keydown",function(event){
+            alert(event.keyCode);
+        })*/
+       /* 获取用户输入，生成提示框中的提示内容，将提示内容添加到email-sug-wrapper中
+    控制email-sug-wrapper的显示/隐藏状态*/
+       // input.oninput=controlprompt;
+/*拿到input输入框的输入内容trim后返回  */
+function getinput(){
+    return input.value.trim();
+}
+/*function getinput() {
+    var arr=[];
+    var brr=[];
+      arr=input.value.trim().split("") ;
+      for(var i=0;i<arr.length;i++){
+          if(arr[i]=="@")  break;
+          brr.push(arr[i]);
+      }
+      return brr.join("");
+}*/
+/* 获取用户输入
+    遍历postfixList {
+        把用户输入和每一个postfix进行结合成为每一个Li
+    }
+    返回生成的提示内容*/
+    /*  当用户输入了 @ 及部分后缀时，只从 postfixList 选取符合用户输入预期的后缀，我们以前缀匹配为要求。
+    当用户输入不满足任何前缀匹配时，则显示全部提示*/
+function setprompt() {
+    
+    var input1=getinput().split("") ;
+    var j,n=null;
+    var brr=[];
+    var crr=[];
+   var ullist=[];
+   for(var i=0;i<input1.length;i++){
+          if(input1[i]=="@") {j=i; break};
+          brr.push(input1[i]);
+      }
+if(j==null){
+    for(var i=0;i<postfixList.length;i++){
+       ullist.push(brr.join("")+"@"+postfixList[i]);
+   }
+} else{
+      for(j=i+1;j<input1.length;j++){
+         crr.push(input1[j]);
+      }
+      for(var k=0;k<postfixList.length;k++)
+        {  
+            if(postfixList[k].search(crr.join(""))!=-1)
+           { ullist.push(brr.join("")+"@"+postfixList[k]); n=1;}
+        }
+        if(n==null){
+            for(var i=0;i<postfixList.length;i++){
+       ullist.push(brr.join("")+"@"+postfixList[i]);
+        }
+        }
+    }
+   return ullist;
+}
+/*获取生成提示框中的提示内容
+    将内容添加到email-sug-wrapper中*/
+function addprompt() {
+    var fragment=document.createDocumentFragment();
+    var ullist=setprompt();
+    var li=null;
+    for(var i=0;i<ullist.length;i++){
+        li=document.createElement("li");
+        li.appendChild(document.createTextNode(ullist[i]));
+        fragment.appendChild(li);
+    }
+    ul.appendChild(fragment);
+     ul.childNodes[nowSelectTipIndex].setAttribute("class","active");
+}
+/*if 用户输入为空 {
+        隐藏提示框
+    } else {
+        显示提示框
+    }*/
+function controlprompt() {
+    if(ul.childNodes.length){
+   for(var i=0;i<ul.childNodes.length;i+=0){
+       ul.removeChild(ul.firstChild);
+   }
+   }
+    addprompt();
+  if(getinput()=="") hiddenprompt();
+  else displayprompt();
+}
+/*   做具体隐藏提示框的操作*/
+function hiddenprompt() {
+    ul.style.display="none";
+}
+/*做具体隐藏提示框的操作*/
+function displayprompt() {
+    ul.style.display="block";
+}
+/*
+    使用CSS实现：鼠标滑过提示框的某一个提示时，这个提示内容背景色变化，表示鼠标经过了这个DOM节点 :hover伪类
+    鼠标如果点击某个提示，则提示内容进入输入框，同时提示框消失
+    在上个步骤结束后，在输入框中任意再输入字符或删除字符，则重新开始出现提示框
+*/
+ul.onclick = function (event) {
+    console.log(event.target);
+  input.value=event.target.firstChild.nodeValue;
+  hiddenprompt();
+  input.focus();//用户点击鼠标，进行提示选择后，焦点依然在输入框中
+}
+/*我们给提示框加上3个按键的功能，分别是回车和上下键，使得可以通过键盘操作进行提示框的选择
+
+    当有提示框的时候，默认第一个提示为被选择状态，用一个和鼠标滑过不一样的背景色来标识  CSS
+    当有输入框的时候，按上键，可以向上移动选择状态，如果按键之前的被选择提示是第一个，则被选状态移到最下面一个
+    当有输入框的时候，按下键，可以向下移动选择状态，如果按键之前的被选择提示是最后一个，则被选状态移到第一个
+    当有输入框时，按回车键，则将当前被选中状态的提示内容，放到输入框中，并隐藏提示框
+    当没有输入框的时候，这3个键盘按键无响应
+    当用户输入发生改变的时候，选择状态都重新切回到第一个提示*/
+
+
+
+// 监听特殊3个键的键盘事件，这个事件可能就是inputDom的输入监听，也有可能是另外一个，请自己测试后判断
+
+  /*  基于数据，我们设置一个变量，来保存当前选择的index（即当前选中的是第几行，从0开始计数），当发生上下键操作的时候，直接改变index值，然后重新渲染提示框中的所有html内容，根据index设置来操作后的选择提示样式，回车的时候，直接根据index来获取对应的内容
+
+基于数据的代码结构*/
+
+// 增加一个变量，用于存储当前选中的提示Li的序号
+
+var  nowSelectTipIndex = 0;
+// 需要修改一下之前的“生成提示框中的提示内容()”
+
+// 监听特殊3个键的键盘事件，这个事件可能就是inputDom的输入监听，也有可能是另外一个，请自己测试后判断
+input.onkeyup=function() {    
+    console.log(event.keyCode)
+    if(event.keyCode==38) {
+        if (nowSelectTipIndex ){
+            nowSelectTipIndex -= 1;
+        } else {
+            nowSelectTipIndex =ul.childNodes.length-1;
+        }
+       
+    }
+     else if(event.keyCode==40) {
+        if (nowSelectTipIndex !=ul.childNodes.length-1){
+            nowSelectTipIndex+=1;
+        } else {
+            nowSelectTipIndex =0;
+        }
+     
+    }
+   else if(event.keyCode==13) {
+        input.value=ul.childNodes[nowSelectTipIndex].firstChild.nodeValue;
+        hiddenprompt();
+    }
+    else if(event.keyCode==27)
+    {
+        input.select();//用户按ESC键的时候，对用户输入进行全选
+    }
+        controlprompt();
+}
+window.onload=function() {
+    input.focus();
+}  //一进入页面就将焦点放在输入框中
+
+    </script>
+</body>
+</html>
